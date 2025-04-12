@@ -1,21 +1,40 @@
 package org.com.sandes.model;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.context.annotation.Primary;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "task_tb")
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(
+            nullable = false, length = 80)
     private String titulo;
+
+    @Column(
+            nullable = false, length = 100)
     private String descricao;
-    private Date dataCriacao;
+
+    @Column
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
+
+    @Column
     private Boolean concluida = false;
 
     public Task() {
     }
 
-    public Task(UUID id, String titulo, String descricao, Date dataCracao, Boolean concluida) {
+    public Task(UUID id, String titulo, String descricao, LocalDateTime dataCracao, Boolean concluida) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
@@ -47,11 +66,11 @@ public class Task {
         this.descricao = descricao;
     }
 
-    public Date getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
