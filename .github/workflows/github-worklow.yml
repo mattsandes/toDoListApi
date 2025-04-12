@@ -2,7 +2,7 @@ name: Let's Roll
 run-name: Waiting ${{ github.actor }} finish the tests
 on: [push]
 jobs:
-  Explore Githubactions:
+  Explore-Github-actions:
     runs-on: ubuntu-latest
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
