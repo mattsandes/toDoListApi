@@ -1,11 +1,14 @@
 package org.com.sandes.services;
 
-import org.apache.coyote.Response;
+import org.com.sandes.exceptions.ResourceNotFoundException;
 import org.com.sandes.model.Task;
+import org.com.sandes.model.dtos.TaskDTO;
 import org.com.sandes.repositories.TaskRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,54 +16,103 @@ import java.util.UUID;
 public class TaskService {
 
     private TaskRepository repository;
+    final private TaskDTO dto = new TaskDTO();
 
     public TaskService(TaskRepository repository) {
         this.repository = repository;
     }
 
-    public List<Task> findAll() {
-        return repository.findAll();
+    public List<TaskDTO> findAll() {
+        List<TaskDTO> dtos = new ArrayList<>();
+
+        var entities = repository.findAll();
+
+        for(Task entity: entities) {
+            dto.setID(entity.getId());
+            dto.setTitulo(entity.getTitulo());
+            dto.setDescricao(entity.getDescricao());
+            dto.setDataCriacao(entity.getDataCriacao());
+            dto.setConcluida(entity.getConcluida());
+
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 
-    public Task findById(UUID id) {
+    public TaskDTO findById(UUID id) {
         if(id == null) {
-            throw new RuntimeException("The id can't be null");
+            throw new IllegalArgumentException("ID can't be null");
         }
 
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No records found for this ID"));
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceAccessException("No records found for this ID"));
+
+        dto.setID(entity.getId());
+        dto.setTitulo(entity.getTitulo());
+        dto.setDescricao(entity.getDescricao());
+        dto.setDataCriacao(entity.getDataCriacao());
+        dto.setConcluida(entity.getConcluida());
+
+        return dto;
     }
 
-    public Task createTask(Task task) {
-        if(task.getTitulo() == null || task.getDescricao() == null) {
-            throw new RuntimeException("Neither title or description can be null");
+    public TaskDTO createTask(TaskDTO dto) {
+        if(dto == null) {
+            throw new IllegalArgumentException("Object body can't be null");
         }
 
-        return repository.save(task);
+        Task task = new Task();
+
+        task.setTitulo(dto.getTitulo());
+        task.setDescricao(dto.getDescricao());
+        task.setConcluida(dto.getConcluida());
+
+        repository.save(task);
+
+        TaskDTO returnDto = new TaskDTO();
+
+        returnDto.setID(task.getId());
+        returnDto.setTitulo(task.getTitulo());
+        returnDto.setDescricao(task.getDescricao());
+        returnDto.setDataCriacao(task.getDataCriacao());
+        returnDto.setConcluida(task.getConcluida());
+
+        return returnDto;
     }
 
-    public Task updateTask(Task task) {
+    public TaskDTO updateTask(TaskDTO task) {
         if(task == null) {
-            throw new RuntimeException("Task can't be null");
+            throw new IllegalArgumentException("Object body can't be null");
         }
 
-        var foundTask = repository.findById(task.getId())
-                .orElseThrow(() -> new RuntimeException("Any task was found by this ID."));
+        var foundTask = repository.findById(
+                task.getId()).orElseThrow(() -> new ResourceNotFoundException("Couldn't find any records for this id!"));
 
         foundTask.setTitulo(task.getTitulo());
         foundTask.setDescricao(task.getDescricao());
         foundTask.setConcluida(task.getConcluida());
 
-        return repository.save(foundTask);
+        repository.save(foundTask);
+
+        TaskDTO returnDto = new TaskDTO();
+
+        returnDto.setID(foundTask.getId());
+        returnDto.setTitulo(foundTask.getTitulo());
+        returnDto.setDescricao(foundTask.getDescricao());
+        returnDto.setDataCriacao(foundTask.getDataCriacao());
+        returnDto.setConcluida(foundTask.getConcluida());
+
+        return returnDto;
     }
 
     public ResponseEntity<?> deleteTask(UUID id) {
         if(id == null) {
-            throw new RuntimeException("Id can't be null");
+            throw new IllegalArgumentException("Object body can't be null");
         }
 
         var foundTask = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Couldn't find any task by this ID"));
+                .orElseThrow(() -> new ResourceNotFoundException("Couldn't find any task by this ID"));
 
         repository.deleteById(id);
 
