@@ -2,7 +2,6 @@ package org.com.sandes.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.context.annotation.Primary;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
