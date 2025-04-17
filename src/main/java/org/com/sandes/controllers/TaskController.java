@@ -1,6 +1,6 @@
 package org.com.sandes.controllers;
 
-import org.com.sandes.model.Task;
+import org.com.sandes.model.dtos.TaskDTO;
 import org.com.sandes.services.TaskService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,22 +20,22 @@ public class TaskController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Task> getTasks() {
+    public List<TaskDTO> getTasks() {
         return service.findAll();
     }
 
     @GetMapping(value = "/{id}")
-    public Task findById(@PathVariable UUID id) {
+    public TaskDTO findById(@PathVariable UUID id) {
         return service.findById(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Task createTask(@RequestBody Task task) {
-        return service.createTask(task);
+    public TaskDTO createTask(@RequestBody TaskDTO dto) {
+        return service.createTask(dto);
     }
 
     @PutMapping
-    public Task updateTask(@RequestBody Task task) {
+    public TaskDTO updateTask(@RequestBody TaskDTO task) {
         return service.updateTask(task);
     }
 
