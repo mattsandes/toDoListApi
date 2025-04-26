@@ -26,6 +26,7 @@ dependencies {
 	testImplementation("org.mockito:mockito-core:5.+")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
 }
 
 tasks.withType<Test> {
