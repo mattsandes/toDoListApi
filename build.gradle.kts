@@ -27,6 +27,9 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
+	testImplementation("org.testcontainers:testcontainers:1.21.0")
+	testImplementation("io.rest-assured:rest-assured:5.5.1")
+	testImplementation("org.testcontainers:postgresql:1.21.0")
 }
 
 tasks.withType<Test> {
