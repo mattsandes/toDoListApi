@@ -13,6 +13,3 @@ CREATE TABLE IF NOT EXISTS public.task_tb
 )
 
 TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.task_tb
-    OWNER to postgres;
