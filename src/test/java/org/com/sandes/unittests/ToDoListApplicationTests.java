@@ -1,4 +1,4 @@
-package org.com.sandes;
+package org.com.sandes.unittests;
 
 import org.com.sandes.model.Task;
 import org.com.sandes.model.dtos.TaskDTO;
@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
