@@ -30,6 +30,10 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers:1.21.0")
 	testImplementation("io.rest-assured:rest-assured:5.5.1")
 	testImplementation("org.testcontainers:postgresql:1.21.0")
+	testImplementation("org.springframework.security:spring-security-test")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("com.auth0:java-jwt:4.5.0")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<Test> {
